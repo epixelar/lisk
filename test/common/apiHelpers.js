@@ -29,7 +29,7 @@ function getTransaction (transaction, cb) {
 function getTransactions (params, cb) {
 	var url = '/api/transactions';
 	url = paramsHelper(url, params);
-	
+
 	http.get(url, httpCallbackHelper.bind(null, cb));
 }
 
@@ -57,8 +57,11 @@ function getMultisignaturesTransactions (cb) {
 	http.get('/api/transactions/multisignatures', httpCallbackHelper.bind(null, cb));
 }
 
-function getPendingMultisignature (transaction, cb) {
-	http.get('/api/multisignatures/pending?publicKey=' + transaction.senderPublicKey, httpCallbackHelper.bind(null, cb));
+function getPendingMultisignatures (params, cb) {
+	var url = '/api/multisignatures/pending';
+	url = paramsHelper(url, params);
+
+	http.get(url, httpCallbackHelper.bind(null, cb));
 }
 
 function sendTransaction (transaction, cb) {
@@ -67,11 +70,6 @@ function sendTransaction (transaction, cb) {
 
 function sendSignature (signature, transaction, cb) {
 	http.post('/api/signatures', {signature: {signature: signature, transaction: transaction.id}}, httpCallbackHelper.bind(null, cb));
-}
-
-function sendLISK (params, cb) {
-	var transaction = lisk.transaction.createTransaction(params.address, params.amount, params.secret, params.secondSecret);
-	sendTransaction(transaction, cb);
 }
 
 function creditAccount (address, amount, cb) {
@@ -156,6 +154,7 @@ function getBalance (address, cb) {
 
 function getBlocksToWaitPromise () {
 	var count = 0;
+
 	return getUnconfirmedTransactionsPromise()
 		.then(function (res) {
 			count += res.count;
@@ -176,10 +175,12 @@ var getUnconfirmedTransactionPromise = node.Promise.promisify(getUnconfirmedTran
 var getUnconfirmedTransactionsPromise = node.Promise.promisify(getUnconfirmedTransactions);
 var getMultisignaturesTransactionPromise = node.Promise.promisify(getMultisignaturesTransaction);
 var getMultisignaturesTransactionsPromise = node.Promise.promisify(getMultisignaturesTransactions);
-var getPendingMultisignaturePromise = node.Promise.promisify(getPendingMultisignature);
+var getPendingMultisignaturesPromise = node.Promise.promisify(getPendingMultisignatures);
+var sendTransactionPromise = node.Promise.promisify(sendTransaction);
 var getNodeConstantsPromise = node.Promise.promisify(getNodeConstants);
 var getNodeStatusPromise = node.Promise.promisify(getNodeStatus);
 var creditAccountPromise = node.Promise.promisify(creditAccount);
+var sendTransactionPromise = node.Promise.promisify(sendTransaction);
 var sendSignaturePromise = node.Promise.promisify(sendSignature);
 var getCountPromise = node.Promise.promisify(getCount);
 var registerDelegatePromise = node.Promise.promisify(registerDelegate);
@@ -195,36 +196,23 @@ var getPublicKeyPromise = node.Promise.promisify(getPublicKey);
 var getBalancePromise = node.Promise.promisify(getBalance);
 
 module.exports = {
-	getTransaction: getTransaction,
 	getTransactionPromise: getTransactionPromise,
-	getTransactions: getTransactions,
 	getTransactionsPromise: getTransactionsPromise,
-	getUnconfirmedTransaction: getUnconfirmedTransaction,
 	getUnconfirmedTransactionPromise: getUnconfirmedTransactionPromise,
-	getUnconfirmedTransactions: getUnconfirmedTransactions,
 	getUnconfirmedTransactionsPromise: getUnconfirmedTransactionsPromise,
-	getQueuedTransaction: getQueuedTransaction,
 	getQueuedTransactionPromise: getQueuedTransactionPromise,
-	getQueuedTransactions: getQueuedTransactions,
 	getQueuedTransactionsPromise: getQueuedTransactionsPromise,
-	getMultisignaturesTransaction: getMultisignaturesTransaction,
 	getMultisignaturesTransactionPromise: getMultisignaturesTransactionPromise,
-	getMultisignaturesTransactions: getMultisignaturesTransactions,
 	getMultisignaturesTransactionsPromise: getMultisignaturesTransactionsPromise,
-	getPendingMultisignature: getPendingMultisignature,
-	getPendingMultisignaturePromise: getPendingMultisignaturePromise,
+	getPendingMultisignaturesPromise: getPendingMultisignaturesPromise,
 	getNodeConstantsPromise: getNodeConstantsPromise,
 	getNodeStatusPromise: getNodeStatusPromise,
-	sendSignature: sendSignature,
 	sendSignaturePromise: sendSignaturePromise,
-	sendTransaction: sendTransaction,
 	sendTransactionPromise: sendTransactionPromise,
-	sendLISK: sendLISK,
 	creditAccount: creditAccount,
 	creditAccountPromise: creditAccountPromise,
 	getCount: getCount,
 	getCountPromise: getCountPromise,
-	registerDelegate: registerDelegate,
 	registerDelegatePromise: registerDelegatePromise,
 	getForgingStatus: getForgingStatus,
 	getForgingStatusPromise: getForgingStatusPromise,
