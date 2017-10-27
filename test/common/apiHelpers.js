@@ -17,21 +17,18 @@ function paramsHelper (url, params) {
 	return url;
 }
 
-function httpCallbackHelperWithStatus (cb, err, res) {
-	if (err) {
-		return cb(err);
-	}
-	cb(null, {
-		status: res.status,
-		body: res.body
-	});
-}
-
 function httpCallbackHelper (cb, err, res) {
 	if (err) {
 		return cb(err);
 	}
 	cb(null, res.body);
+}
+
+function httpResponseCallbackHelper (cb, err, res) {
+	if (err) {
+		return cb(err);
+	}
+	cb(null, res);
 }
 
 function getTransaction (transaction, cb) {
@@ -155,7 +152,14 @@ function getNextForgers (params, cb) {
 }
 
 function getAccounts (params, cb) {
-	http.get('/api/accounts?' + params, httpCallbackHelperWithStatus.bind(null, cb));
+	http.get('/api/accounts?' + params, httpResponseCallbackHelper.bind(null, cb));
+}
+
+function getBlocks (params, cb) {
+	var url = '/api/blocks';
+	url = paramsHelper(url, params);
+
+	http.get(url, httpResponseCallbackHelper.bind(null, cb));
 }
 
 function getBlocksToWaitPromise () {
@@ -167,7 +171,7 @@ function getBlocksToWaitPromise () {
 		})
 		.then(function (res) {
 			count += res.count;
-			return Math.ceil(count / constants.maxTxsPerBlock) + 1;
+			return Math.ceil(count / constants.maxTxsPerBlock);
 		});
 }
 
@@ -230,6 +234,7 @@ var putForgingDelegatePromise = node.Promise.promisify(putForgingDelegate);
 var getForgedByAccountPromise = node.Promise.promisify(getForgedByAccount);
 var getNextForgersPromise = node.Promise.promisify(getNextForgers);
 var getAccountsPromise = node.Promise.promisify(getAccounts);
+var getBlocksPromise = node.Promise.promisify(getBlocks);
 
 module.exports = {
 	getTransaction: getTransaction,
@@ -275,6 +280,7 @@ module.exports = {
 	getNextForgersPromise: getNextForgersPromise,
 	getAccounts: getAccounts,
 	getAccountsPromise: getAccountsPromise,
+	getBlocksPromise: getBlocksPromise,
 	getBlocksToWaitPromise: getBlocksToWaitPromise,
 	waitForConfirmations: waitForConfirmations
 };
