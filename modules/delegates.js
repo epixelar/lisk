@@ -69,7 +69,7 @@ function Delegates (cb, scope) {
 	);
 
 	setImmediate(cb, null, self);
-}	
+}
 
 /**
  * Gets slot time and keypair.
@@ -240,7 +240,7 @@ __private.toggleForgingStatus = function (publicKey, secretKey, cb) {
 			return setImmediate(cb, err);
 		}
 
-		if (account && account.isDelegate) {
+		if (account && account.username) {
 			var forgingStatus;
 
 			if (actionEnable) {
@@ -393,7 +393,7 @@ __private.loadDelegates = function (cb) {
 				return setImmediate(seriesCb, ['Account with public key:', keypair.publicKey.toString('hex'), 'not found'].join(' '));
 			}
 
-			if (account.isDelegate) {
+			if (account.username) {
 				__private.keypairs[keypair.publicKey.toString('hex')] = keypair;
 				library.logger.info(['Forging enabled on account:', account.address].join(' '));
 			} else {

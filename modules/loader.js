@@ -310,10 +310,15 @@ __private.loadBlockChain = function () {
 	var verify = Boolean(library.config.loading.verifyOnLoading);
 
 	function load (count) {
-		verify = true;
-		__private.total = count;
-		library.logger.info('Blockchain ready');
-		library.bus.message('blockchainReady');
+		modules.blocks.utils.loadLastBlock(function (err, block) {
+			if (err) {
+				return reload(count, err || 'Failed to load last block');
+			} else {
+				__private.lastBlock = block;
+				library.logger.info('Blockchain ready');
+				library.bus.message('blockchainReady');
+			}
+		});
 	}
 
 	function reload (count, message) {
