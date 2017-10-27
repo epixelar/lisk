@@ -19,6 +19,8 @@ BEGIN;
 		ALTER TABLE delegates
 		RENAME pk TO "public_key";
 		ALTER TABLE delegates
+		RENAME voters_cnt TO "voters_count";
+		ALTER TABLE delegates
 		RENAME blocks_missed_cnt TO "blocks_missed_count";
 		ALTER TABLE delegates
 		RENAME blocks_forged_cnt TO "blocks_forged_count";
@@ -44,7 +46,7 @@ BEGIN;
 		transactions t
 	WHERE
 		t."transaction_id" = v."transactionId";
-		
+
 	CREATE TRIGGER vote_insert
 		AFTER INSERT ON votes
 		FOR EACH ROW
