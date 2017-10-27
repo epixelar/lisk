@@ -62,7 +62,7 @@ FOR EACH ROW EXECUTE PROCEDURE vote_insert();
 
 CREATE OR REPLACE FUNCTION public.vote_insert() RETURNS TRIGGER LANGUAGE PLPGSQL AS $function$
 BEGIN INSERT INTO votes_details
-SELECT r.transaction_id, r.voter_address, (CASE WHEN substring(vote, 1, 1) = '+' THEN 'add' ELSE 'rem' END) AS type, r.timestamp, r.height, DECODE(substring(vote, 2), 'hex') AS delegate_public_key FROM ( SELECT v."transaction_id" AS transaction_id, t."sender_address" AS voter_address, b.timestamp AS timestamp, b.height, regexp_split_to_table(v.votes, ',') AS vote FROM votes v, transactions t, blocks b WHERE v."transaction_id" = NEW."transaction_id" AND v."transaction_id" = t.transaction_id AND b.id = t."block_id" ) AS r ORDER BY r.timestamp ASC; RETURN NULL; END $function$ ;
+SELECT r.transaction_id, r.voter_address, (CASE WHEN substring(vote, 1, 1) = '+' THEN 'add' ELSE 'rem' END) AS type, r.timestamp, r.height, DECODE(substring(vote, 2), 'hex') AS delegate_public_key FROM ( SELECT v."transaction_id" AS transaction_id, t."sender_address" AS voter_address, b.timestamp AS timestamp, b.height, regexp_split_to_table(v.votes, ',') AS vote FROM votes v, transactions t, blocks b WHERE v."transaction_id" = NEW."transaction_id" AND v."transaction_id" = t.transaction_id AND b.block_id = t."block_id" ) AS r ORDER BY r.timestamp ASC; RETURN NULL; END $function$ ;
 
 /* Begin second signature migration */
 CREATE TABLE "public".second_signature ( transaction_id varchar(20) NOT NULL,
