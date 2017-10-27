@@ -7,6 +7,7 @@ BEGIN;
  	"type"               smallint  NOT NULL,
  	"timestamp"          integer  NOT NULL,
  	sender_public_key    bytea  NOT NULL,
+	requester_public_key bytea ,
  	sender_address       varchar(22)  NOT NULL,
  	recipient_address    varchar(22)  ,
  	amount               bigint  NOT NULL,

@@ -820,21 +820,21 @@ Transaction.prototype.undoUnconfirmed = function (transaction, sender, cb) {
 	}.bind(this));
 };
 
-Transaction.prototype.dbTable = 'trs';
+Transaction.prototype.dbTable = 'transactions';
 
 Transaction.prototype.dbFields = [
-	'id',
-	'blockId',
+	'transaction_id',
+	'block_id',
 	'type',
 	'timestamp',
-	'senderPublicKey',
-	'requesterPublicKey',
-	'senderId',
+	'sender_public_key',
+	'requester_public_key',
+	'sender_address',
 	'recipientId',
 	'amount',
 	'fee',
 	'signature',
-	'signSignature',
+	'second_signature',
 	'signatures'
 ];
 
@@ -866,18 +866,18 @@ Transaction.prototype.dbSave = function (transaction) {
 			table: this.dbTable,
 			fields: this.dbFields,
 			values: {
-				id: transaction.id,
-				blockId: transaction.blockId,
+				transaction_id: transaction.id,
+				block_id: transaction.blockId,
 				type: transaction.type,
 				timestamp: transaction.timestamp,
-				senderPublicKey: senderPublicKey,
-				requesterPublicKey: requesterPublicKey,
-				senderId: transaction.senderId,
-				recipientId: transaction.recipientId || null,
+				sender_public_key: senderPublicKey,
+				requester_public_key: requesterPublicKey,
+				sender_address: transaction.senderId,
+				recipient_address: transaction.recipientId || null,
 				amount: transaction.amount,
 				fee: transaction.fee,
 				signature: signature,
-				signSignature: signSignature,
+				second_signature: signSignature,
 				signatures: transaction.signatures ? transaction.signatures.join(',') : null,
 			}
 		}
