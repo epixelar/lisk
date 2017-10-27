@@ -313,24 +313,6 @@ __private.loadBlockChain = function () {
 		verify = true;
 		__private.total = count;
 		async.series({
-			removeTables: function (seriesCb) {
-				library.logic.account.removeTables(function (err) {
-					if (err) {
-						throw err;
-					} else {
-						return setImmediate(seriesCb);
-					}
-				});
-			},
-			createTables: function (seriesCb) {
-				library.logic.account.createTables(function (err) {
-					if (err) {
-						throw err;
-					} else {
-						return setImmediate(seriesCb);
-					}
-				});
-			},
 			loadBlocksOffset: function (seriesCb) {
 				async.until(
 					function () {

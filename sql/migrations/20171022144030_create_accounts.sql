@@ -27,43 +27,26 @@ CREATE OR REPLACE FUNCTION public.public_key_rollback() RETURNS TRIGGER LANGUAGE
 DROP FUNCTION public.validatemembalances();
 
 CREATE OR REPLACE FUNCTION public.validate_accounts_balances()
-RETURNS TABLE(address character varying, public_key text, username character varying, blockchain bigint, memory bigint, diff bigint) LANGUAGE PLPGSQL AS $function$
+RETURNS TABLE(address varchar, blockchain bigint, memory bigint, diff bigint) LANGUAGE PLPGSQL AS $function$
 BEGIN
 	RETURN QUERY
 		WITH balances AS (
 		    (SELECT UPPER("sender_address") AS address,
 		         -SUM(amount+fee) AS amount
-		    FROM transactions
-		    GROUP BY  UPPER("sender_address"))
-		    UNION
-		    ALL
-		        (SELECT UPPER("recipient_address") AS address,
-		         SUM(amount) AS amount
-		        FROM transactions
-		        WHERE "recipient_address" IS NOT NULL
-		        GROUP BY  UPPER("recipient_address"))
-		        UNION
-		        ALL
-		            (SELECT a.address,
-		         r.amount
-		            FROM
-		                (SELECT r.public_key,
-		         SUM(r.fees) + SUM(r.reward) AS amount
-		                FROM rounds_rewards r
-		                GROUP BY  r.public_key) r
-		                LEFT JOIN accounts a
-		                    ON r.public_key = a."public_key" ) ), accounts AS
-		                (SELECT b.address,
-		         SUM(b.amount) AS balance
-		                FROM balances b
-		                GROUP BY  b.address)
-		            SELECT m.address,
-		         ENCODE(m."publicKey",
-		         'hex') AS public_key, d.user AS username, a.balance::BIGINT AS blockchain, m.balance::BIGINT AS memory, (m.balance-a.balance)::BIGINT AS diff
-		        FROM accounts a, delegates d
-		    LEFT JOIN "public".accounts m
-		    ON a.address = m.address
-		WHERE a.balance <> m.balance;
+		    FROM transactions GROUP BY  UPPER("sender_address"))
+		    UNION ALL
+		      (SELECT UPPER("recipient_address") AS address, SUM(amount) AS amount
+		        FROM transactions WHERE "recipient_address" IS NOT NULL GROUP BY  UPPER("recipient_address"))
+		        UNION ALL
+		          (SELECT a_inner.address, r.amount
+								FROM (SELECT r.public_key, SUM(r.fees) + SUM(r.reward) AS amount
+		                		FROM rounds_rewards r GROUP BY  r.public_key) r
+		                		LEFT JOIN accounts a_inner ON r.public_key = a_inner."public_key" )
+					),
+					accounts AS (SELECT b.address, SUM(b.amount) AS balance FROM balances b GROUP BY b.address)
+		       SELECT a.address::VARCHAR, a.balance::BIGINT AS blockchain, b.amount::BIGINT AS memory, (a.balance-b.amount)::BIGINT AS diff
+		       FROM accounts a, balances b
+					 LEFT JOIN "public".accounts pa ON pa.address = b.address	WHERE pa.balance <> b.amount;
 END $function$ ;
 
 CREATE
