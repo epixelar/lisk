@@ -830,7 +830,7 @@ Transaction.prototype.dbFields = [
 	'sender_public_key',
 	'requester_public_key',
 	'sender_address',
-	'recipientId',
+	'recipient_address',
 	'amount',
 	'fee',
 	'signature',

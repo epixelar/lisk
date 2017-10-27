@@ -241,7 +241,7 @@ Block.prototype.verifySignature = function (block) {
 Block.prototype.dbTable = 'blocks';
 
 Block.prototype.dbFields = [
-	'id',
+	'block_id',
 	'version',
 	'timestamp',
 	'height',
