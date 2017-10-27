@@ -2,7 +2,7 @@ BEGIN;
 
 
 DROP FUNCTION getdelegateslist();
-DROP TRIGGER block_insert_delete CASCADE;
+DROP TRIGGER block_insert_delete;
 DROP FUNCTION delegates_forged_blocks_cnt_update();
 DROP FUNCTION delegates_voters_cnt_update();
 
