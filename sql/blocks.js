@@ -13,7 +13,7 @@ var BlocksSql = {
     'generator_public_key'
   ],
 
-  getGenesisBlockId: 'SELECT "block_id" AS "id" FROM blocks WHERE "block_id" = ${id}',
+  getGenesisBlockId: 'SELECT "block_id" AS id FROM blocks WHERE "block_id" = ${id}',
 
   deleteBlock: 'DELETE FROM blocks WHERE "block_id" = ${id};',
 
