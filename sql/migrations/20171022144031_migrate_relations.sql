@@ -18,6 +18,11 @@ SELECT t."id",
        t.signatures
 FROM trs t;
 
+/* Rename rounds_rewards columns */
+
+ALTER TABLE rounds_rewards
+RENAME "pk" to "public_key";
+
 /* Rename transfers Stuff */
 ALTER TABLE transfer RENAME "transactionId" TO "transaction_id";
 
