@@ -1,6 +1,7 @@
 BEGIN;
 
 
+
 DROP TABLE IF EXISTS accounts CASCADE;
 
 CREATE TABLE "public".accounts (address varchar(22) NOT NULL,
@@ -57,10 +58,10 @@ BEGIN
 		                FROM balances b
 		                GROUP BY  b.address)
 		            SELECT m.address,
-		         ENCODE(m."public_key",
-		         'hex') AS public_key, m.username, a.balance::BIGINT AS blockchain, m.balance::BIGINT AS memory, (m.balance-a.balance)::BIGINT AS diff
-		        FROM accounts a
-		    LEFT JOIN accounts m
+		         ENCODE(m."publicKey",
+		         'hex') AS public_key, d.user AS username, a.balance::BIGINT AS blockchain, m.balance::BIGINT AS memory, (m.balance-a.balance)::BIGINT AS diff
+		        FROM accounts a, delegates d
+		    LEFT JOIN "public".accounts m
 		    ON a.address = m.address
 		WHERE a.balance <> m.balance;
 END $function$ ;
