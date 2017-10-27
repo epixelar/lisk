@@ -118,7 +118,7 @@ function Account (db, schema, logger, cb) {
 				type: 'integer'
 			},
 			conv: Number,
-			expression: '("vote")::bigint'
+			expression: '("votes")::bigint'
 		},
 		{
 			name: 'voters',
