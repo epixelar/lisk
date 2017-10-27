@@ -2,6 +2,8 @@ BEGIN;
 
 
 DROP FUNCTION getdelegateslist();
+DROP FUNCTION delegates_forged_blocks_cnt_update();
+DROP FUNCTION delegates_voters_cnt_update();
 
 CREATE OR REPLACE FUNCTION public.delegate_change_ranks_update()
  RETURNS trigger
