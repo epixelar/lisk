@@ -44,8 +44,8 @@ BEGIN;
 		transactions t
 	WHERE
 		t."transaction_id" = v."transactionId";
-
-	CREATE OR REPLACE TRIGGER vote_insert
+		
+	CREATE TRIGGER vote_insert
 		AFTER INSERT ON votes
 		FOR EACH ROW
 		EXECUTE PROCEDURE vote_insert();
