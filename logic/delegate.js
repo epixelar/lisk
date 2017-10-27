@@ -57,7 +57,7 @@ Delegate.prototype.verify = function (transaction, sender, cb) {
 		return setImmediate(cb, 'Invalid transaction amount');
 	}
 
-	if (sender.isDelegate) {
+	if (sender.username) {
 		return setImmediate(cb, 'Account is already a delegate');
 	}
 

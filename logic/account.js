@@ -42,7 +42,7 @@ function Account (db, schema, logger, cb) {
 	 * @property {publicKey} secondPublicKey
 	 * @property {number} balance - Between 0 and totalAmount from constants.
 	 * @property {number} vote
-	 * @property {number} rate
+	 * @property {number} rank
 	 * @property {number} multimin - Between 0 and 17.
 	 * @property {number} multilifetime - Between 1 and 72.
 	 * @property {number} producedblocks - Between -1 and 1.

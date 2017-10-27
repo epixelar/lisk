@@ -394,13 +394,21 @@ Multisignature.prototype.dbRead = function (raw) {
 	}
 };
 
-Multisignature.prototype.dbTable = 'multisignatures';
+Multisignature.prototype.master.dbTable = 'multisignatures_master';
 
-Multisignature.prototype.dbFields = [
-	'min',
+Multisignature.prototype.master.dbFields = [
+	'minimum',
 	'lifetime',
 	'keysgroup',
-	'transactionId'
+	'transaction_id'
+];
+
+Multisignature.prototype.member.dbTable = 'multisignatures_member';
+
+Multisignature.prototype.member.dbFields = [
+	'master_public_key',
+	'public_key',
+	'transaction_id'
 ];
 
 /**
@@ -410,14 +418,15 @@ Multisignature.prototype.dbFields = [
  * @todo check if this function is called.
  */
 Multisignature.prototype.dbSave = function (transaction) {
+	// TODO: We need to refactor this to also return promise for member inserts
 	return {
-		table: this.dbTable,
-		fields: this.dbFields,
+		table: this.master.dbTable,
+		fields: this.master.dbFields,
 		values: {
-			min: transaction.asset.multisignature.min,
+			minimum: transaction.asset.multisignature.min,
 			lifetime: transaction.asset.multisignature.lifetime,
-			keysgroup: transaction.asset.multisignature.keysgroup.join(','),
-			transactionId: transaction.id
+			//keysgroup: transaction.asset.multisignature.keysgroup.join(','), Need to use for making member inserts
+			transaction_id: transaction.id
 		}
 	};
 };
