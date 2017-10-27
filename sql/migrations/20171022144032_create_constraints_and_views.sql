@@ -89,8 +89,8 @@ CREATE VIEW "public".accounts_list AS  SELECT a.address,
     d.voters_count AS voters,
     d.blocks_forged_count AS "producedBlocks",
     d.blocks_missed_count AS "missedBlocks",
-    mma.lifetime,
-    mma.minimum AS min
+    mma.lifetime AS multilifetime,
+    mma.minimum AS multimin
    FROM accounts a,
     second_signature ss,
     delegates d,
