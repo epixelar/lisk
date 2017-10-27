@@ -1,6 +1,6 @@
 BEGIN;
 
-DROP TABLE IF EXISTS accounts;
+DROP TABLE IF EXISTS accounts CASCADE;
 
 CREATE TABLE "public".accounts (
 	address              varchar(22)  NOT NULL,
@@ -12,9 +12,6 @@ CREATE TABLE "public".accounts (
 	CONSTRAINT idx_accounts UNIQUE ( public_key ) ,
 	CONSTRAINT idx_accounts_0 UNIQUE ( transaction_id )
  );
-
-
-DROP TRIGGER pk_rollback;
 
  CREATE OR REPLACE FUNCTION public.public_key_rollback()
 	RETURNS trigger
