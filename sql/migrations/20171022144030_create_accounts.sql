@@ -57,7 +57,7 @@ BEGIN
 		                FROM balances b
 		                GROUP BY  b.address)
 		            SELECT m.address,
-		         ENCODE(m."publicKey",
+		         ENCODE(m."public_key",
 		         'hex') AS public_key, m.username, a.balance::BIGINT AS blockchain, m.balance::BIGINT AS memory, (m.balance-a.balance)::BIGINT AS diff
 		        FROM accounts a
 		    LEFT JOIN accounts m
