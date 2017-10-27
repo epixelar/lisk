@@ -18,10 +18,10 @@ SELECT t."id",
        t.signatures
 FROM trs t;
 
-/* Rename transfers shit */
+/* Rename transfers Stuff */
 ALTER TABLE transfer RENAME "transactionId" TO "transaction_id";
 
-/* Delegates shit */
+/* Delegates Stuff */
 ALTER TABLE delegates RENAME tx_id TO "transaction_id";
 
 
@@ -36,6 +36,14 @@ ALTER TABLE delegates RENAME blocks_missed_cnt TO "blocks_missed_count";
 
 ALTER TABLE delegates RENAME blocks_forged_cnt TO "blocks_forged_count";
 
+
+/* Votes Details */
+
+
+ALTER TABLE votes_details
+rename tx_id to transaction_id;
+ALTER TABLE votes_details
+rename delegate_pk to delegate_public_key;
 /* Votes */
 ALTER TABLE votes RENAME TO votes_old;
 
@@ -53,6 +61,8 @@ SELECT t."transaction_id",
 FROM votes_old v,
      transactions t
 WHERE t."transaction_id" = v."transactionId";
+
+
 
 
 CREATE TRIGGER vote_insert AFTER

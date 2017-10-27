@@ -164,7 +164,7 @@ CREATE VIEW "public".full_blocks_list AS SELECT b.block_id AS b_id,
 			     v.votes AS v_votes,
 			     m.minimum AS m_min,
 			     m.lifetime AS m_lifetime,
-			     --m.keysgroup AS m_keysgroup, Need to implement this shit with a select
+			     --m.keysgroup AS m_keysgroup, Need to implement this Stuff with a select
 			     dapp.name AS dapp_name,
 			     dapp.description AS dapp_description,
 			     dapp.tags AS dapp_tags,
@@ -175,7 +175,7 @@ CREATE VIEW "public".full_blocks_list AS SELECT b.block_id AS b_id,
 			     it."dapp_id" AS "in_dappId",
 			     ot."dapp_id" AS "ot_dappId",
 			     ot."out_transaction_id" AS "ot_outTransactionId",
-			     --encode(t."requester_public_key", 'hex'::text) AS "t_requesterPublicKey", What do we do with shit? Was uninmplemented and not in new schema
+			     --encode(t."requester_public_key", 'hex'::text) AS "t_requesterPublicKey", What do we do with Stuff? Was uninmplemented and not in new schema
 			     convert_from(tf.data, 'utf8'::name) AS tf_data,
 			     t.signatures AS t_signatures
 			    FROM (((((((((blocks b
