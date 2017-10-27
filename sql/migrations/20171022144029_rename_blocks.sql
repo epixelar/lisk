@@ -25,11 +25,10 @@ RENAME "blockSignature" TO "signature";
 
 
 --Create new data type which will store block rewards info
-DROP FUNCTION getblockrewards();
-DROP FUNCTION generatedelegateslist();
-DROP FUNCTION calcblockreward();
-DROP FUNCTION calcsupply();
-DROP FUNCTION calcsupply_test();
+DROP FUNCTION IF EXISTS getblockrewards();
+DROP FUNCTION IF EXISTS calcblockreward();
+DROP FUNCTION IF EXISTS calcsupply();
+DROP FUNCTION IF EXISTS calcsupply_test();
 DROP TYPE blockRewards;
 
 
