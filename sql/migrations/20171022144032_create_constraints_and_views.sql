@@ -78,10 +78,9 @@ ALTER TABLE "public".delegates ADD CONSTRAINT "fkey_delegates_transaction_id" FO
 
 -- Recreate views
 
-CREATE VIEW "public".accounts_list AS  SELECT a.address,
+CREATE VIEW "public".accounts_list AS  SELECT DISTINCT a.address,
 		a.balance AS balance,
     a.public_key AS "publicKey",
-    ss.second_public_key AS "secondPublicKey",
     d.name AS username,
     d.rank,
     d.fees,
@@ -90,13 +89,14 @@ CREATE VIEW "public".accounts_list AS  SELECT a.address,
     d.voters_count AS voters,
     d.blocks_forged_count AS "producedBlocks",
     d.blocks_missed_count AS "missedBlocks",
-    mma.lifetime AS multilifetime,
-    mma.minimum AS multimin
-   FROM accounts a,
-    second_signature ss,
-    delegates d,
-    multisignatures_master mma,
-    multisignatures_member mme;;
+		mma.lifetime AS multilifetime,
+		mma.minimum AS multimin
+   FROM ((((accounts a
+		 LEFT JOIN delegates d ON (((d.public_key)::text = (a.public_key)::text)))
+		 LEFT JOIN multisignatures_master mma ON (((mma."public_key")::text = (a.public_key)::text)))
+		 LEFT JOIN second_signature ss ON (((ss."public_key")::text = (a.public_key)::text)))
+		 LEFT JOIN multisignatures_member mme ON (((mme."public_key")::text = (a.public_key)::text)));
+
 
 CREATE VIEW "public".blocks_list AS  SELECT b.block_id AS b_id,
     b.version AS b_version,
