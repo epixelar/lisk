@@ -45,8 +45,6 @@ BEGIN;
 	WHERE
 		t."transaction_id" = v."transactionId";
 
-	DROP TRIGGER vote_insert;
-
 	CREATE OR REPLACE TRIGGER vote_insert
 		AFTER INSERT ON votes
 		FOR EACH ROW
