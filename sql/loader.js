@@ -3,7 +3,7 @@
 var LoaderSql = {
 	countBlocks: 'SELECT COUNT("row_id")::int FROM blocks',
 
-	getGenesisBlock: 'SELECT "block_id", "payload_hash", "signature" FROM blocks WHERE "height" = 1',
+	getGenesisBlock: 'SELECT "block_id" AS "id", "payload_hash" AS "payloadHash", "signature" AS "blockSignature" FROM blocks WHERE "height" = 1',
 
 	countMemAccounts: 'SELECT COUNT(*)::int FROM accounts a WHERE a."transaction_id" IS NOT NULL',
 

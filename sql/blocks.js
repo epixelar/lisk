@@ -2,18 +2,18 @@
 
 var BlocksSql = {
   sortFields: [
-    'id',
+    'block_id',
     'timestamp',
     'height',
     'previous_block_id',
-    'totalAmount',
-    'totalFee',
+    'total_amount',
+    'total_fee',
     'reward',
-    'numberOfTransactions',
+    'total_transactions',
     'generator_public_key'
   ],
 
-  getGenesisBlockId: 'SELECT "block_id" FROM blocks WHERE "block_id" = ${id}',
+  getGenesisBlockId: 'SELECT "block_id" AS "id" FROM blocks WHERE "block_id" = ${id}',
 
   deleteBlock: 'DELETE FROM blocks WHERE "block_id" = ${id};',
 
