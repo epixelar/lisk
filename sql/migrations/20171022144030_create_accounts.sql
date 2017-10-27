@@ -1,5 +1,6 @@
 BEGIN;
 
+
 DROP TABLE IF EXISTS accounts CASCADE;
 
 CREATE TABLE "public".accounts (address varchar(22) NOT NULL,
@@ -49,7 +50,7 @@ BEGIN
 		         SUM(r.fees) + SUM(r.reward) AS amount
 		                FROM rounds_rewards r
 		                GROUP BY  r.public_key) r
-		                LEFT JOIN mem_accounts a
+		                LEFT JOIN accounts a
 		                    ON r.public_key = a."public_key" ) ), accounts AS
 		                (SELECT b.address,
 		         SUM(b.amount) AS balance
@@ -59,7 +60,7 @@ BEGIN
 		         ENCODE(m."publicKey",
 		         'hex') AS public_key, m.username, a.balance::BIGINT AS blockchain, m.balance::BIGINT AS memory, (m.balance-a.balance)::BIGINT AS diff
 		        FROM accounts a
-		    LEFT JOIN mem_accounts m
+		    LEFT JOIN accounts m
 		    ON a.address = m.address
 		WHERE a.balance <> m.balance;
 END $function$ ;
