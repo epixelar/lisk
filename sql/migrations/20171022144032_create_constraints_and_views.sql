@@ -81,6 +81,7 @@ ALTER TABLE "public".delegates ADD CONSTRAINT "fkey_delegates_transaction_id" FO
 CREATE VIEW "public".accounts_list AS  SELECT DISTINCT a.address,
 		a.balance AS balance,
     a.public_key AS "publicKey",
+		ss.public_key AS "secondPublicKey",
     d.name AS username,
     d.rank,
     d.fees,
