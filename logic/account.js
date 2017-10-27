@@ -127,7 +127,7 @@ function Account (db, schema, logger, cb) {
 				type: 'integer'
 			},
 			conv: Number,
-			expression: '("vote")::int'
+			expression: '("voters")::int'
 		},
 		{
 			name: 'rank',
