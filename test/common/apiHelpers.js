@@ -218,6 +218,24 @@ function waitForConfirmations (transactions, limitHeight) {
 	return waitUntilLimit(limitHeight);
 }
 
+function getDapp (dapp_id, cb) {
+	http.get('/api/dapps/get?id=' + dapp_id, httpCallbackHelper.bind(null, cb));
+}
+
+function getDapps (params, cb) {
+	var url = '/api/dapps';
+	url = paramsHelper(url, params);
+
+	http.get(url, httpCallbackHelper.bind(null, cb));
+}
+
+function getDappsCategories (params, cb) {
+	var url = '/api/dapps/categories';
+	url = paramsHelper(url, params);
+
+	http.get(url, httpCallbackHelper.bind(null, cb));
+}
+
 var getTransactionPromise = node.Promise.promisify(getTransaction);
 var getTransactionsPromise = node.Promise.promisify(getTransactions);
 var getQueuedTransactionPromise = node.Promise.promisify(getQueuedTransaction);
@@ -245,6 +263,9 @@ var getAccountsPromise = node.Promise.promisify(getAccounts);
 var getPublicKeyPromise = node.Promise.promisify(getPublicKey);
 var getBalancePromise = node.Promise.promisify(getBalance);
 var getBlocksPromise = node.Promise.promisify(getBlocks);
+var getDappPromise = node.Promise.promisify(getDapp);
+var getDappsPromise = node.Promise.promisify(getDapps);
+var getDappsCategoriesPromise = node.Promise.promisify(getDappsCategories);
 
 module.exports = {
 	getTransaction: getTransaction,
@@ -296,5 +317,8 @@ module.exports = {
 	getPublicKeyPromise: getPublicKeyPromise,
 	getBlocksPromise: getBlocksPromise,
 	getBlocksToWaitPromise: getBlocksToWaitPromise,
-	waitForConfirmations: waitForConfirmations
+	waitForConfirmations: waitForConfirmations,
+	getDappPromise: getDappPromise,
+	getDappsPromise: getDappsPromise,
+	getDappsCategoriesPromise: getDappsCategoriesPromise
 };
