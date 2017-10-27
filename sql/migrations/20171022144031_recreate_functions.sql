@@ -2,8 +2,18 @@ BEGIN;
 
 
 DROP FUNCTION getdelegateslist();
+DROP TRIGGER block_insert_delete CASCADE;
 DROP FUNCTION delegates_forged_blocks_cnt_update();
 DROP FUNCTION delegates_voters_cnt_update();
+
+
+-- Create trigger that will execute 'delegates_forged_blocks_cnt_update' after insertion or deletion of block
+CREATE CONSTRAINT TRIGGER block_insert_delete
+	AFTER INSERT OR DELETE ON blocks
+	DEFERRABLE INITIALLY DEFERRED
+	FOR EACH ROW
+	EXECUTE PROCEDURE delegates_forged_blocks_count_update();
+
 
 CREATE OR REPLACE FUNCTION public.delegate_change_ranks_update()
  RETURNS trigger
